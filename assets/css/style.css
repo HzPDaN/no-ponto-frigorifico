@@ -889,8 +889,17 @@ main > section:last-child.faixa{ padding-bottom:calc(56px + var(--onda-alt)); }
 .cab::after{ background:var(--marinho)!important; }
 .menu-aberto .dev-aviso{ display:none; }
 @media (max-width:680px){
-  .dev-aviso{ font-size:.66rem; letter-spacing:.04em; padding:16px 14px 6px; }
-  .dev-aviso .dev-aviso__direitos{ display:none; }
+  .dev-aviso{ font-size:.66rem; letter-spacing:.02em; line-height:1.4; padding:15px 14px 7px; }
+  .dev-aviso .dev-aviso__direitos{ font-size:.62rem; letter-spacing:0; margin-top:4px; max-height:4.5em; overflow:hidden; transition:max-height .35s var(--suave), opacity .25s, margin .35s; }
+  .cab.is-rolado .dev-aviso .dev-aviso__direitos{ max-height:0; opacity:0; margin-top:0; }
+}
+
+/* Faixa azul no fim da página encosta direto no rodapé */
+main:has(> .faixa:last-child) + .rod{ margin-top:0; }
+main:has(> .faixa:last-child) + .rod::before{ background:#061428; }
+@media (max-width:680px){
+  .rod__tel{ flex-basis:100%; }
+  .rod__fale .btn{ flex:1; min-width:0; }
 }
 
 /* ==================================================================
