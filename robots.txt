@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /_ferramentas/
+Disallow: /enviar.php
+
+Sitemap: https://nopontofrigorifico.com.br/sitemap.xml
