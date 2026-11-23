@@ -12,7 +12,29 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var DADOS = window.NP_DADOS || {};
+  var EN = /^en/i.test(raiz.lang);
+  var BASE = window.NP_DADOS || {};
+  var DADOS = EN && BASE.traduzir ? BASE.traduzir('en') : BASE;
+  var RAIZ_SITE = document.body.getAttribute('data-raiz') || '';
+  // Textos da interface em inglês (chave = texto em português)
+  var TXT_EN = {
+    ' · cortes desta região:': ' · cuts from this region:',
+    'Fechar': 'Close', 'Código do produto': 'Product code', 'Descrição': 'Description', 'Marca': 'Brand',
+    'Peso aprox.': 'Approx. weight', 'NCM': 'NCM (HS code)', 'Tipo de etiqueta': 'Label type', 'Código de barras': 'Barcode',
+    'Corte anterior': 'Previous cut', 'Próximo corte': 'Next cut', 'Solicitar este corte': 'Request this cut',
+    'Em breve': 'Coming soon', 'Sob consulta': 'On request', 'Corte': 'Cut', 'Foto do produto': 'Product photo', 'em breve': 'coming soon',
+    'Olá! Tenho interesse no corte ': 'Hello! I am interested in the cut ',
+    'É preciso concordar para enviar.': 'Please agree before sending.', 'Preencha este campo.': 'Please fill in this field.',
+    'Informe um e-mail válido.': 'Please enter a valid e-mail.', 'Informe o telefone com DDD.': 'Please enter the phone number with area code.',
+    'Envie um arquivo de até 10 MB.': 'Please send a file of up to 10 MB.', 'Revise os campos destacados.': 'Please check the highlighted fields.',
+    'Aguarde alguns segundos antes de enviar de novo.': 'Please wait a few seconds before sending again.', 'Enviando…': 'Sending…',
+    'Mensagem enviada! Nossa equipe retornará em breve.': 'Message sent! Our team will get back to you soon.',
+    'Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp ': 'We could not send it right now. Please try again or reach us on WhatsApp '
+  };
+  var T = function (s) { return (EN && TXT_EN[s]) || s; };
+  // Nome do corte em português (as chaves do CATALOGO são em português)
+  var PT_DE = {};
+  if (EN && BASE.TRAD_EN) Object.keys(BASE.TRAD_EN).forEach(function (k) { PT_DE[BASE.TRAD_EN[k]] = k; });
   var CONTATO = DADOS.CONTATO || {};
   var escapar = function (s) { return String(s).replace(/[&<>"]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]; }); };
   var porSlug = {};
@@ -73,7 +95,8 @@
     function passo(t) {
       if (!inicio) inicio = t;
       var p = Math.min((t - inicio) / dur, 1);
-      el.textContent = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
+      var v = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
+      el.textContent = el.hasAttribute('data-milhar') ? v.toLocaleString(EN ? 'en-US' : 'pt-BR') : v;
       if (p < 1) requestAnimationFrame(passo);
     }
     el.textContent = '0';
@@ -131,7 +154,7 @@
       var reg = esp && esp.regioes[id];
       if (!reg) return;
       $('[data-titulo]', painel).textContent = reg[0];
-      $('[data-parte]', painel).textContent = reg[1] + ' · cortes desta região:';
+      $('[data-parte]', painel).textContent = reg[1] + T(' · cortes desta região:');
       $('[data-cortes]', painel).innerHTML = reg[2].map(function (c) {
         var t = escapar(c);
         return '<li><button type="button" class="corte corte--chip" data-ficha="' + esp.slug + '|' + id + '|' + t + '">' + t + '<span aria-hidden="true">+</span></button></li>';
@@ -191,22 +214,26 @@
     ficha.setAttribute('aria-labelledby', 'ficha-titulo');
     ficha.innerHTML =
       '<div class="ficha__caixa">' +
-        '<button type="button" class="ficha__fechar" data-ficha-fechar aria-label="Fechar">×</button>' +
-        '<dl class="ficha__dados">' +
-          '<div><dt>Código do produto</dt><dd data-f="codigo"></dd></div>' +
-          '<div><dt>Descritivo do produto</dt><dd data-f="descricao"></dd></div>' +
-          '<div><dt>Peso aprox.</dt><dd data-f="peso"></dd></div>' +
-        '</dl>' +
+        '<button type="button" class="ficha__fechar" data-ficha-fechar aria-label="' + T('Fechar') + '">×</button>' +
         '<div class="ficha__grade">' +
           '<div class="ficha__animal" data-f="animal"></div>' +
           '<div class="ficha__foto" data-f="foto"></div>' +
         '</div>' +
+        '<dl class="ficha__dados">' +
+          '<div class="ficha__dado--largo"><dt>' + T('Descrição') + '</dt><dd data-f="descricao"></dd></div>' +
+          '<div><dt>' + T('Marca') + '</dt><dd data-f="marca"></dd></div>' +
+          '<div><dt>' + T('Código do produto') + '</dt><dd data-f="codigo"></dd></div>' +
+          '<div><dt>' + T('Peso aprox.') + '</dt><dd data-f="peso"></dd></div>' +
+          '<div><dt>' + T('NCM') + '</dt><dd data-f="ncm"></dd></div>' +
+          '<div><dt>' + T('Tipo de etiqueta') + '</dt><dd data-f="etiqueta"></dd></div>' +
+          '<div><dt>' + T('Código de barras') + '</dt><dd data-f="barras"></dd></div>' +
+        '</dl>' +
         '<div class="ficha__base">' +
           '<div><p class="ficha__esp" data-f="especie"></p><h2 id="ficha-titulo" class="ficha__titulo" data-f="nome"></h2></div>' +
           '<div class="ficha__acoes">' +
-            '<button type="button" class="ficha__nav" data-ficha-ir="-1" aria-label="Corte anterior">←</button>' +
-            '<button type="button" class="ficha__nav" data-ficha-ir="1" aria-label="Próximo corte">→</button>' +
-            '<a class="btn btn--vermelho" data-f="pedir" target="_blank" rel="noopener">Solicitar este corte</a>' +
+            '<button type="button" class="ficha__nav" data-ficha-ir="-1" aria-label="' + T('Corte anterior') + '">←</button>' +
+            '<button type="button" class="ficha__nav" data-ficha-ir="1" aria-label="' + T('Próximo corte') + '">→</button>' +
+            '<a class="btn btn--vermelho" data-f="pedir" target="_blank" rel="noopener">' + T('Solicitar este corte') + '</a>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -264,11 +291,16 @@
     fichaPos = (pos + fichaLista.length) % fichaLista.length;
     var item = fichaLista[fichaPos];
     var esp = porSlug[item[0]], reg = esp.regioes[item[1]], nome = item[2];
-    var cat = (DADOS.CATALOGO || {})[esp.slug + '/' + nome] || {};
+    var cat = (DADOS.CATALOGO || {})[esp.slug + '/' + (PT_DE[nome] || nome)] || {};
     var f = function (k) { return $('[data-f="' + k + '"]', ficha); };
-    f('codigo').textContent = cat.codigo || 'Em breve';
-    f('descricao').textContent = cat.descricao || ('Corte ' + esp.singular.toLowerCase() + ' · ' + reg[1].toLowerCase());
-    f('peso').textContent = cat.peso || 'Sob consulta';
+    var marcaPadrao = (esp.marcas && esp.marcas[0]) || 'No Ponto Frigorífico';
+    f('descricao').textContent = cat.descricao || (EN ? esp.singular + ' cut · ' + reg[1].toLowerCase() : 'Corte ' + esp.singular.toLowerCase() + ' · ' + reg[1].toLowerCase());
+    f('marca').textContent = cat.marca || marcaPadrao;
+    f('codigo').textContent = cat.codigo || T('Em breve');
+    f('peso').textContent = cat.peso || T('Sob consulta');
+    f('ncm').textContent = cat.ncm || T('Em breve');
+    f('etiqueta').textContent = cat.etiqueta || T('Em breve');
+    f('barras').textContent = cat.barras || T('Em breve');
     f('especie').textContent = esp.singular + ' · ' + reg[0];
     f('nome').textContent = nome;
     var animal = f('animal'); animal.innerHTML = '';
@@ -276,9 +308,9 @@
     if (desenho) animal.appendChild(desenho);
     f('foto').innerHTML = cat.foto
       ? '<img src="' + escapar(cat.foto) + '" alt="' + escapar(nome) + '">'
-      : '<p class="ficha__vazio"><span>Foto do produto</span>em breve</p>';
+      : '<p class="ficha__vazio"><span>' + T('Foto do produto') + '</span>' + T('em breve') + '</p>';
     f('pedir').href = 'https://wa.me/' + (CONTATO.whatsapp || '') + '?text=' +
-      encodeURIComponent('Olá! Tenho interesse no corte ' + nome + ' (' + esp.singular.toLowerCase() + ').');
+      encodeURIComponent(T('Olá! Tenho interesse no corte ') + nome + ' (' + esp.singular.toLowerCase() + ').');
   }
 
   document.addEventListener('click', function (e) {
@@ -313,59 +345,16 @@
     });
   }
 
-  /* ---------- Churrascômetro ---------- */
-  var chur = $('[data-churrasco]');
-  if (chur && DADOS.CHURRASCO) {
-    var C = DADOS.CHURRASCO;
-    var saida = $('[data-resultado]');
-    var kg = function (g) { return (Math.ceil(g / 100) / 10).toFixed(1).replace('.', ','); };
-    var num = function (nome) { var v = parseInt(chur.elements[nome].value, 10); return isNaN(v) || v < 0 ? 0 : Math.min(v, 500); };
-    var marcado = function (nome) { var r = $('input[name="' + nome + '"]:checked', chur); return r ? parseFloat(r.value) : 1; };
-
-    function calcular() {
-      var adultos = num('adultos'), criancas = num('criancas');
-      var fator = marcado('duracao') * marcado('apetite') * (chur.elements.acompanhamentos.checked ? 0.85 : 1);
-      var total = (adultos * C.gramasAdulto + criancas * C.gramasCrianca) * fator;
-      var cortes = $$('input[name="corte"]:checked', chur);
-      var lista = $('[data-lista]', saida);
-      if (!cortes.length || !total) {
-        $('[data-total]', saida).textContent = '0';
-        lista.innerHTML = '<li class="chur__vazio">' + (!total ? 'Informe quantas pessoas vão ao churrasco.' : 'Escolha ao menos um corte.') + '</li>';
-        ['carvao', 'sal', 'pao'].forEach(function (k) { $('[data-' + k + ']', saida).textContent = '—'; });
-        $('[data-compartilhar]', saida).hidden = true;
-        return;
-      }
-      var porCorte = total / cortes.length;
-      var linhas = cortes.map(function (c) { return [c.getAttribute('data-rotulo'), kg(porCorte)]; });
-      var totalKg = (Math.ceil(porCorte / 100) * cortes.length) / 10;
-      $('[data-total]', saida).textContent = totalKg.toFixed(1).replace('.', ',');
-      lista.innerHTML = linhas.map(function (l) { return '<li><span>' + escapar(l[0]) + '</span><strong>' + l[1] + ' kg</strong></li>'; }).join('');
-      var carvao = Math.max(3, Math.ceil(totalKg * 1.2 / 3) * 3);
-      var sal = Math.max(500, Math.ceil(totalKg / 4) * 250);
-      var pao = adultos * 2 + criancas;
-      $('[data-carvao]', saida).textContent = carvao + ' kg';
-      $('[data-sal]', saida).textContent = (sal >= 1000 ? (sal / 1000).toFixed(1).replace('.', ',') + ' kg' : sal + ' g');
-      $('[data-pao]', saida).textContent = pao + ' unid.';
-      var texto = 'Meu churrasco (' + adultos + ' adultos' + (criancas ? ', ' + criancas + ' crianças' : '') + '):\n' +
-        linhas.map(function (l) { return '• ' + l[0] + ': ' + l[1] + ' kg'; }).join('\n') +
-        '\nTotal: ' + totalKg.toFixed(1).replace('.', ',') + ' kg de carne\nCarvão: ' + carvao + ' kg\n\nCalculado no Churrascômetro No Ponto';
-      var enviar = $('[data-compartilhar]', saida);
-      enviar.hidden = false;
-      enviar.href = 'https://wa.me/?text=' + encodeURIComponent(texto);
-    }
-
-    $$('[data-mais]', chur).forEach(function (b) {
-      b.addEventListener('click', function () {
-        var campo = b.parentNode.querySelector('input');
-        campo.value = Math.max(0, Math.min(500, (parseInt(campo.value, 10) || 0) + parseInt(b.getAttribute('data-mais'), 10)));
-        calcular();
-      });
-    });
-    chur.addEventListener('input', calcular);
-    chur.addEventListener('change', calcular);
-    chur.addEventListener('submit', function (e) { e.preventDefault(); });
-    calcular();
+  /* ---------- Contato: pré-seleciona o assunto (#comprar / #fale) ---------- */
+  function assuntoPeloEndereco() {
+    var sel = $('#ct-assunto');
+    if (!sel) return;
+    var h = location.hash.slice(1);
+    if (h === 'comprar') sel.value = 'Comprar produtos';
+    if (h === 'fale') sel.value = 'Fale conosco';
   }
+  assuntoPeloEndereco();
+  window.addEventListener('hashchange', assuntoPeloEndereco);
 
   /* ---------- Formulários ---------- */
   var INTERVALO_MS = 10000;
@@ -385,10 +374,10 @@
 
   function erroDoCampo(c) {
     var v = c.type === 'checkbox' ? c.checked : c.value.trim();
-    if (c.required && !v) return c.type === 'checkbox' ? 'É preciso concordar para enviar.' : 'Preencha este campo.';
-    if (c.type === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Informe um e-mail válido.';
-    if (c.hasAttribute('data-tel') && v && v.replace(/\D/g, '').length < 10) return 'Informe o telefone com DDD.';
-    if (c.type === 'file' && c.files && c.files[0] && c.files[0].size > 10 * 1024 * 1024) return 'Envie um arquivo de até 10 MB.';
+    if (c.required && !v) return T(c.type === 'checkbox' ? 'É preciso concordar para enviar.' : 'Preencha este campo.');
+    if (c.type === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return T('Informe um e-mail válido.');
+    if (c.hasAttribute('data-tel') && v && v.replace(/\D/g, '').length < 10) return T('Informe o telefone com DDD.');
+    if (c.type === 'file' && c.files && c.files[0] && c.files[0].size > 10 * 1024 * 1024) return T('Envie um arquivo de até 10 MB.');
     return '';
   }
 
@@ -424,23 +413,23 @@
         marcarErro(c, msg);
         if (msg && !primeiro) primeiro = c;
       });
-      if (primeiro) { avisar('Revise os campos destacados.', false); primeiro.focus(); return; }
-      if (Date.now() - ultimoEnvio < INTERVALO_MS) { avisar('Aguarde alguns segundos antes de enviar de novo.', false); return; }
+      if (primeiro) { avisar(T('Revise os campos destacados.'), false); primeiro.focus(); return; }
+      if (Date.now() - ultimoEnvio < INTERVALO_MS) { avisar(T('Aguarde alguns segundos antes de enviar de novo.'), false); return; }
 
       botao.disabled = true;
-      avisar('Enviando…', true);
-      fetch('enviar.php', { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+      avisar(T('Enviando…'), true);
+      fetch(RAIZ_SITE + 'enviar.php', { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
         .then(function (r) { return r.json(); })
         .then(function (resp) {
           if (!resp || !resp.ok) throw new Error((resp && resp.erro) || 'erro');
           ultimoEnvio = Date.now();
           form.reset();
-          avisar('Mensagem enviada! Nossa equipe retornará em breve.', true);
+          avisar(T('Mensagem enviada! Nossa equipe retornará em breve.'), true);
         })
         .catch(function (err) {
           var msg = err && err.message && err.message !== 'erro' && err.message.indexOf('JSON') === -1 && err.message.indexOf('fetch') === -1
             ? err.message
-            : 'Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp ' + (CONTATO.whatsappTexto || '') + '.';
+            : T('Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp ') + (CONTATO.whatsappTexto || '') + '.';
           avisar(msg, false);
         })
         .then(function () { botao.disabled = false; });

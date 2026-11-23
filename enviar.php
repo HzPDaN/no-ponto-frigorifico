@@ -14,6 +14,7 @@ const REMETENTE = 'sac@redonoponto.com.br';
 const DESTINO_POR_FORM = [
   'Contato'          => '',
   'Marca própria'    => '',
+  'Seja parceiro'    => '', // equipe de compras de gado
   'Venda seu gado'   => '', // equipe de compra de animais
   'Trabalhe conosco' => '', // Recursos Humanos
 ];
@@ -37,7 +38,7 @@ const CAMPOS = [
   'area'       => ['Área de interesse', 80],
   'mensagem'   => ['Mensagem', 1500],
 ];
-const FORMULARIOS = ['Contato', 'Marca própria', 'Venda seu gado', 'Trabalhe conosco'];
+const FORMULARIOS = ['Contato', 'Marca própria', 'Seja parceiro', 'Venda seu gado', 'Trabalhe conosco'];
 const TIPOS_ANEXO = [
   'pdf'  => ['application/pdf'],
   'doc'  => ['application/msword', 'application/octet-stream', 'application/x-ole-storage', 'application/CDFV2'],

@@ -53,11 +53,40 @@
 
   var ESPECIES = [
     {
+      slug: 'bovinos', nome: 'Bovinos', singular: 'Bovino', capacidade: 300,
+      titulo: 'Frigorífico de Bovinos com SIF',
+      chamada: 'Carne bovina com alto nível de acabamento de gordura.',
+      texto: 'Os bovinos são escolhidos por uma equipe dedicada à compra e seleção dos animais, valorizando genética e cobertura de gordura. O resultado são cortes com maciez, sabor e suculência superiores, entregues inteiros ou porcionados, resfriados ou congelados.',
+      marcas: ['No Ponto Frigorífico', 'Ponto Oito'],
+      destaque: 'Cortes nobres e selecionados na linha premium Ponto Oito.',
+      geo: {
+        silhueta: 'boi',
+        regioes: [
+          ['pescoco', '190,80 280,95 285,230 190,230', [248, 160]],
+          ['cupim', '270,0 400,0 385,92 280,95', [330, 70]],
+          ['acem', '280,95 385,92 390,175 285,175', [335, 135]],
+          ['peito', '190,230 285,230 300,330 190,330', [248, 268]],
+          ['paleta', '285,175 390,175 395,260 300,260 285,230', [340, 215]],
+          ['musculo-d', '300,260 395,260 400,450 290,450', [334, 330]],
+          ['contrafile', '385,0 500,0 500,165 390,175', [445, 130]],
+          ['alcatra', '500,0 560,0 570,160 500,165', [533, 122]],
+          ['picanha', '560,0 720,0 640,130 570,160', [596, 116]],
+          ['file', '500,165 570,160 570,195 500,200', [535, 182]],
+          ['costela', '390,175 500,165 500,200 570,195 560,240 395,245', [468, 214]],
+          ['ponta-agulha', '395,245 480,242 480,330 395,330', [440, 265]],
+          ['fraldinha', '480,242 560,240 600,300 480,330', [522, 268]],
+          ['coxao', '570,160 640,130 720,0 760,0 760,320 600,300 560,240 570,195', [612, 212]],
+          ['musculo-t', '480,330 600,300 760,320 760,450 480,450', [538, 352]]
+        ]
+      },
+      regioes: CORTES_BOI
+    },
+    {
       slug: 'suinos', nome: 'Suínos', singular: 'Suíno', capacidade: 600,
       titulo: 'Frigorífico de Suínos com SIF',
       chamada: 'Cortes suínos com procedência, da carcaça ao porcionado.',
       texto: 'A maior capacidade de abate da planta é dedicada aos suínos. Os animais chegam de produtores parceiros, passam por recebimento em instalações de baixo estresse e seguem por uma linha de abate moderna, acompanhada pelo Serviço de Inspeção Federal do recebimento ao produto final.',
-      marcas: ['No Ponto Frigorífico', 'ponto.08'],
+      marcas: ['No Ponto Frigorífico', 'Ponto Oito', 'No Ponto Foods'],
       destaque: 'Cortes inteiros e porcionados, resfriados e congelados, embalados com identificação da espécie e do corte.',
       geo: {
         silhueta: 'porco',
@@ -84,35 +113,6 @@
         'pernil': ['Pernil', 'Traseiro', ['Pernil', 'Pernil sem osso']],
         'joelho-t': ['Joelho traseiro', 'Pernas', ['Joelho (eisbein)']]
       }
-    },
-    {
-      slug: 'bovinos', nome: 'Bovinos', singular: 'Bovino', capacidade: 300,
-      titulo: 'Frigorífico de Bovinos com SIF',
-      chamada: 'Carne bovina com alto nível de acabamento de gordura.',
-      texto: 'Os bovinos são escolhidos por uma equipe dedicada à compra e seleção dos animais, valorizando genética e cobertura de gordura. O resultado são cortes com maciez, sabor e suculência superiores, entregues inteiros ou porcionados, resfriados ou congelados.',
-      marcas: ['No Ponto Frigorífico', 'ponto.08'],
-      destaque: 'Cortes nobres e selecionados na linha premium ponto.08.',
-      geo: {
-        silhueta: 'boi',
-        regioes: [
-          ['pescoco', '190,80 280,95 285,230 190,230', [248, 160]],
-          ['cupim', '270,0 400,0 385,92 280,95', [330, 70]],
-          ['acem', '280,95 385,92 390,175 285,175', [335, 135]],
-          ['peito', '190,230 285,230 300,330 190,330', [248, 268]],
-          ['paleta', '285,175 390,175 395,260 300,260 285,230', [340, 215]],
-          ['musculo-d', '300,260 395,260 400,450 290,450', [334, 330]],
-          ['contrafile', '385,0 500,0 500,165 390,175', [445, 130]],
-          ['alcatra', '500,0 560,0 570,160 500,165', [533, 122]],
-          ['picanha', '560,0 720,0 640,130 570,160', [596, 116]],
-          ['file', '500,165 570,160 570,195 500,200', [535, 182]],
-          ['costela', '390,175 500,165 500,200 570,195 560,240 395,245', [468, 214]],
-          ['ponta-agulha', '395,245 480,242 480,330 395,330', [440, 265]],
-          ['fraldinha', '480,242 560,240 600,300 480,330', [522, 268]],
-          ['coxao', '570,160 640,130 720,0 760,0 760,320 600,300 560,240 570,195', [612, 212]],
-          ['musculo-t', '480,330 600,300 760,320 760,450 480,450', [538, 352]]
-        ]
-      },
-      regioes: CORTES_BOI
     },
     {
       slug: 'bubalinos', nome: 'Bubalinos', singular: 'Bubalino', capacidade: 300,
@@ -146,8 +146,8 @@
       slug: 'ovinos', nome: 'Ovinos', singular: 'Ovino', capacidade: 200,
       titulo: 'Frigorífico de Ovinos e Cordeiro com SIF',
       chamada: 'Cortes de cordeiro sob medida para quem exige excelência.',
-      texto: 'O propósito da No Ponto é tornar-se referência nacional em cortes ovinos. A linha atende supermercados, açougues e boutiques de carne com cortes selecionados e acompanhamento de pós-venda.',
-      marcas: [],
+      texto: 'O propósito da No Ponto é tornar-se referência nacional em cortes ovinos. Uma linha de alto valor comercial, com cortes selecionados de cordeiro, padrão de toalete e acompanhamento de pós-venda para supermercados, açougues e boutiques de carne.',
+      marcas: ['No Ponto Frigorífico'],
       destaque: 'Cortes selecionados de cordeiro para supermercados, açougues e boutiques de carne.',
       geo: {
         silhueta: 'ovelha',
@@ -175,42 +175,81 @@
     }
   ];
 
-  // logo: caminho do arquivo da marca. Vazio = espaço em branco reservado para a logo.
+  // As quatro marcas do grupo. logo: caminho do arquivo; vazio = a marca aparece escrita
+  // (aguardando o arquivo da logo). Textos de Foods e Vesper: confirmar com o cliente.
   var MARCAS = [
     {
       slug: 'no-ponto', nome: 'No Ponto Frigorífico', logo: 'assets/img/marca/logo-color.png', linha: 'Primeira linha',
-      especies: 'Cortes bovinos e suínos', slogan: 'O delicioso sabor da carne',
-      texto: 'A marca que dá nome ao frigorífico: cortes bovinos e suínos de primeira linha, com o padrão de qualidade No Ponto em cada etapa.'
+      especies: 'Bovinos · Suínos · Bubalinos · Ovinos', slogan: 'O delicioso sabor da carne',
+      texto: 'A marca que dá nome ao frigorífico: cortes inteiros e porcionados das quatro espécies, com o padrão de qualidade No Ponto em cada etapa.'
     },
     {
-      slug: 'ponto08', logo: '', nome: 'ponto.08', linha: 'Linha premium',
-      especies: 'Cortes nobres bovinos e suínos', slogan: 'O delicioso sabor da carne',
+      slug: 'ponto-oito', nome: 'Ponto Oito', logo: '', escrita: 'ponto.08', linha: 'Linha premium',
+      especies: 'Cortes nobres bovinos e suínos', slogan: '',
       texto: 'Cortes nobres e selecionados, resultado de uma cuidadosa escolha dos animais e da valorização da cobertura de gordura.'
+    },
+    {
+      slug: 'foods', nome: 'No Ponto Foods', logo: '', escrita: 'No Ponto Foods', linha: 'Industrializados suínos',
+      especies: 'Defumados · Frescos · Temperados · Banha', slogan: '',
+      texto: 'Produtos suínos temperados e porcionados, em embalagens fracionadas e econômicas, que reduzem o tempo de preparo e facilitam a rotina de quem cozinha.'
+    },
+    {
+      slug: 'vesper', nome: 'Vesper', logo: '', escrita: 'Vesper', linha: 'Nova marca',
+      especies: 'Posicionamento em definição', slogan: '',
+      texto: 'Nova marca do portfólio do grupo. Mais informações em breve.'
     }
+  ];
+
+  /* Números de apresentação (home). A VALIDAR COM A ADRIANA antes do lançamento. */
+  var NUMEROS = [
+    { valor: 1400, rotulo: 'cabeças de capacidade total de abate' },
+    { valor: 4, rotulo: 'espécies com Inspeção Federal (SIF)' },
+    { valor: 5, rotulo: 'estados atendidos com frota própria' },
+    { valor: 100, sufixo: '%', rotulo: 'dos animais rastreados até a origem' }
+  ];
+
+  /* Linha de miúdos e produtos específicos. Portfólio A CONFIRMAR com o comercial. */
+  var MIUDOS = {
+    grupos: [
+      { slug: 'bovinos', nome: 'Miúdos bovinos', itens: ['Fígado', 'Coração', 'Língua', 'Rim', 'Rabada', 'Bucho', 'Mocotó'] },
+      { slug: 'suinos', nome: 'Miúdos suínos', itens: ['Fígado', 'Coração', 'Língua', 'Rim', 'Orelha', 'Pé', 'Rabo'] },
+      { slug: 'ovinos', nome: 'Miúdos ovinos', itens: ['Fígado', 'Coração', 'Rim'] }
+    ],
+    especificos: [
+      { slug: 'sangue', nome: 'Sangue', texto: 'Coletado e processado em fluxo próprio, com controle sanitário, para uso industrial e alimentício.' },
+      { slug: 'cabeca', nome: 'Cabeça de porco', texto: 'Produto específico da linha suína, com toalete e embalagem próprias, resfriado ou congelado.' }
+    ]
+  };
+
+  /* Contatos por setor (página de contato). Responsáveis, números e e-mails de cada
+     setor A CONFIRMAR: enquanto não chegarem, usam os canais gerais da empresa. */
+  var SETORES = [
+    { slug: 'comercial', nome: 'Comercial', resp: 'Vendas para supermercados, açougues e atacadistas', tel: '+554635261115', telTexto: '(46) 3526-1115', whats: '5546992024048', whatsTexto: '(46) 99202-4048', email: 'sac@redonoponto.com.br' },
+    { slug: 'compras', nome: 'Compras de gado', resp: 'Parceria com produtores e compra de animais', tel: '+5546999360112', telTexto: '(46) 9 9936-0112', whats: '5546999360112', whatsTexto: '(46) 9 9936-0112', email: 'sac@redonoponto.com.br' },
+    { slug: 'rh', nome: 'Recursos Humanos', resp: 'Currículos, vagas e oportunidades', tel: '+554635261115', telTexto: '(46) 3526-1115', whats: '', whatsTexto: '', email: 'sac@redonoponto.com.br' },
+    { slug: 'sac', nome: 'Atendimento geral (SAC)', resp: 'Dúvidas, pós-venda e outros assuntos', tel: '+554635261115', telTexto: '(46) 3526-1115', whats: '5546992024048', whatsTexto: '(46) 99202-4048', email: 'sac@redonoponto.com.br' }
+  ];
+
+  /* Depoimentos. Espaços reservados: substituir pelos depoimentos reais enviados
+     pelo cliente (texto, nome, empresa/propriedade e cidade). tipo: cliente | produtor */
+  var DEPOIMENTOS = [
+    { tipo: 'cliente', texto: 'Espaço reservado para o depoimento de um cliente do varejo. O texto será enviado pela equipe No Ponto.', nome: 'Nome do cliente', origem: 'Supermercado · Cidade (UF)' },
+    { tipo: 'parceiro', texto: 'Espaço reservado para o depoimento de um parceiro comercial ou distribuidor.', nome: 'Nome do parceiro', origem: 'Empresa · Cidade (UF)' },
+    { tipo: 'produtor', texto: 'Espaço reservado para o depoimento de um produtor parceiro sobre a relação com o frigorífico.', nome: 'Nome do produtor', origem: 'Propriedade · Cidade (UF)' },
+    { tipo: 'produtor', texto: 'Espaço reservado para o depoimento de um segundo produtor parceiro: negociação, recolhimento e retorno do lote.', nome: 'Nome do produtor', origem: 'Propriedade · Cidade (UF)' }
   ];
 
   /* Ficha de produto (abre ao clicar em um corte). Preencher com o catálogo
      do cliente. Chave: 'espécie/Nome do corte' exatamente como em ESPECIES.
      foto: caminho da imagem (ex.: 'assets/img/cortes/ovinos-french-rack.jpg').
-     Campos vazios aparecem como "Em breve" no site. Exemplo:
-     'ovinos/French rack': { codigo: 'OVC01005', descricao: 'Carne congelada de ovino com osso', peso: '0,580 kg', foto: '' } */
+     Campos: codigo, descricao, marca, peso, ncm, etiqueta (tipo de etiqueta),
+     barras (código de barras / EAN), foto. Vazios aparecem como "Em breve". Exemplo:
+     'ovinos/French rack': { codigo: 'OVC01005', descricao: 'Carne congelada de ovino com osso', marca: 'No Ponto Frigorífico',
+                             peso: '0,580 kg', ncm: '0204.42.00', etiqueta: 'Peso variável', barras: '7890000000000', foto: '' } */
   var CATALOGO = {
   };
 
-  /* Churrascômetro: cortes oferecidos por espécie e gramas por adulto
-     (base de mercado: 400 g de carne por adulto em churrasco de até 4 h). */
-  var CHURRASCO = {
-    gramasAdulto: 400, gramasCrianca: 200,
-    cortes: [
-      ['bovinos', 'Bovino', ['Picanha', 'Alcatra', 'Maminha', 'Fraldinha', 'Contrafilé', 'Costela', 'Cupim']],
-      ['suinos', 'Suíno', ['Costelinha', 'Panceta', 'Lombo', 'Pernil']],
-      ['ovinos', 'Cordeiro', ['Paleta', 'Costela', 'Carré', 'Pernil']],
-      ['bubalinos', 'Búfalo', ['Picanha', 'Contrafilé', 'Fraldinha']]
-    ],
-    padrao: ['bovinos/Picanha', 'bovinos/Fraldinha', 'suinos/Costelinha']
-  };
-
-  /* Selos e certificações (página certificacoes.html, faixa da home e qualidade).
+  /* Selos e certificações (página Qualidade e segurança e faixa da home).
      status: 'ativo' | 'implantacao' | 'planejado'.
      provisorio: true = levantamento de mercado, ainda NÃO confirmado pelo cliente.
      Confirmar cada item antes de publicar. destaque: aparece na faixa da home. */
@@ -247,7 +286,31 @@
       desc: 'Certificação de abate conforme os preceitos islâmicos, exigida em parte do mercado externo.' }
   ];
 
-  var dados = { CERTIFICACOES: CERTIFICACOES, CONTATO: CONTATO, ESPECIES: ESPECIES, MARCAS: MARCAS, CATALOGO: CATALOGO, CHURRASCO: CHURRASCO };
+  /* Versão em inglês: TRAD_EN traduz cada texto dos dados acima (chave = texto em
+     português exatamente igual). Textos sem tradução aparecem em português. */
+  var TRAD_EN = {};
+  if (typeof module !== 'undefined' && module.exports) {
+    try { TRAD_EN = require('./dados-en.js'); } catch (e) { TRAD_EN = {}; }
+  } else if (raiz.NP_TRAD_EN) { TRAD_EN = raiz.NP_TRAD_EN; }
+
+  function traduzir(lang) {
+    if (lang !== 'en') return dados;
+    var copia = function (v, chave) {
+      if (typeof v === 'string') return (chave === 'slug' || chave === 'logo' || chave === 'foto') ? v : (TRAD_EN[v] || v);
+      if (Array.isArray(v)) return v.map(function (x) { return copia(x); });
+      if (v && typeof v === 'object') {
+        var o = {};
+        for (var k in v) if (Object.prototype.hasOwnProperty.call(v, k)) o[k] = (k === 'CONTATO' || k === 'CATALOGO' || k === 'TRAD_EN' || k === 'geo') ? v[k] : copia(v[k], k);
+        return o;
+      }
+      return v;
+    };
+    var r = copia({ ESPECIES: ESPECIES, MARCAS: MARCAS, NUMEROS: NUMEROS, MIUDOS: MIUDOS, SETORES: SETORES, DEPOIMENTOS: DEPOIMENTOS, CERTIFICACOES: CERTIFICACOES });
+    r.CONTATO = CONTATO; r.CATALOGO = CATALOGO; r.TRAD_EN = TRAD_EN; r.traduzir = traduzir;
+    return r;
+  }
+
+  var dados = { CERTIFICACOES: CERTIFICACOES, CONTATO: CONTATO, ESPECIES: ESPECIES, MARCAS: MARCAS, CATALOGO: CATALOGO, NUMEROS: NUMEROS, MIUDOS: MIUDOS, SETORES: SETORES, DEPOIMENTOS: DEPOIMENTOS, TRAD_EN: TRAD_EN, traduzir: traduzir };
   if (typeof module !== 'undefined' && module.exports) module.exports = dados;
   else raiz.NP_DADOS = dados;
 })(this);
